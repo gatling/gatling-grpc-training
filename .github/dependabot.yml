@@ -1,0 +1,26 @@
+version: 2
+updates:
+  - package-ecosystem: "maven"
+    directory: "/gatling"
+    commit-message:
+      prefix: "chore"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+    ignore:
+      - dependency-name: "com.google.protobuf:protoc"
+        versions: ['>= 4'] # https://github.com/grpc/grpc-java/issues/11015
+  - package-ecosystem: "gradle"
+    directory: "/server"
+    commit-message:
+      prefix: "chore"
+    groups:
+      grpc:
+        patterns:
+          - "io.grpc:*"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+    ignore:
+      - dependency-name: "com.google.protobuf:protoc"
+        versions: ['>= 4'] # https://github.com/grpc/grpc-java/issues/11015
