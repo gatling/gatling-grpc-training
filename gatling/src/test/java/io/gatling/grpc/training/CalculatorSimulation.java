@@ -11,12 +11,20 @@ import static io.gatling.javaapi.grpc.GrpcDsl.*;
 public class CalculatorSimulation extends Simulation {
 
     GrpcProtocolBuilder baseGrpcProtocol = grpc
-            // TODO
-            ;
+        .forAddress("localhost", 50052)
+        ;
 
     ScenarioBuilder unary = scenario("Calculator Unary")
-            // TODO
-            ;
+        .exec(
+            grpc("Sum")
+                .unary(CalculatorServiceGrpc.getSumMethod())
+                .send(
+                    SumRequest.newBuilder()
+                        .setFirstNumber(1)
+                        .setSecondNumber(2)
+                        .build()
+                )
+        );
 
     ScenarioBuilder deadlines = scenario("Calculator w/ Deadlines")
             // TODO
