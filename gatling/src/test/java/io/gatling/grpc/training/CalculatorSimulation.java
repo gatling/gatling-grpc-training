@@ -88,7 +88,6 @@ public class CalculatorSimulation extends Simulation {
             ;
 
     ScenarioBuilder bidirectionalStreaming = scenario("Calculator Bidirectional Streaming")
-        .feed(csv("numbers.csv"))
         .exec(
             bidirectionalStream.start(),
             repeat(10).on(
