@@ -92,10 +92,12 @@ public class CalculatorSimulation extends Simulation {
         .exec(
             bidirectionalStream.start(),
             repeat(10).on(
-                bidirectionalStream.send(session ->
-                    FindMaximumRequest.newBuilder()
-                        .setNumber(ThreadLocalRandom.current().nextInt(0, 1000))
-                        .build())
+                bidirectionalStream.send(session -> {
+                    int number = ThreadLocalRandom.current().nextInt(0, 1000);
+                    return FindMaximumRequest.newBuilder()
+                        .setNumber(number)
+                        .build();
+                })
             ),
             bidirectionalStream.halfClose()
         );
