@@ -6,6 +6,7 @@ import io.gatling.grpc.training.calculator.*;
 import io.gatling.javaapi.core.ScenarioBuilder;
 import io.gatling.javaapi.core.Simulation;
 import io.gatling.javaapi.grpc.GrpcProtocolBuilder;
+import io.gatling.javaapi.grpc.GrpcServerStreamingServiceBuilder;
 
 import io.grpc.Metadata;
 import io.grpc.Status;
@@ -52,9 +53,19 @@ public class CalculatorSimulation extends Simulation {
                 )
         );
 
+    GrpcServerStreamingServiceBuilder<PrimeNumberDecompositionRequest, PrimeNumberDecompositionResponse> serverStream =
+        grpc("Prime Number Decomposition")
+            .serverStream(CalculatorServiceGrpc.getPrimeNumberDecompositionMethod());
+
+    // Lifecycle: send + awaitStreamEnd
     ScenarioBuilder serverStreaming = scenario("Calculator Server Streaming")
-            // TODO
-            ;
+        .exec(
+            serverStream.send(
+                 PrimeNumberDecompositionRequest.newBuilder()
+                     .setNumber(109987656890L)
+                     .build()),
+            serverStream.awaitStreamEnd()
+        );
 
     ScenarioBuilder clientStreaming = scenario("Calculator Client Streaming")
             // TODO
