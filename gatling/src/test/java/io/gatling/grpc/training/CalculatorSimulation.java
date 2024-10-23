@@ -1,5 +1,7 @@
 package io.gatling.grpc.training;
 
+import java.time.Duration;
+
 import io.gatling.grpc.training.calculator.*;
 import io.gatling.javaapi.core.ScenarioBuilder;
 import io.gatling.javaapi.core.Simulation;
@@ -27,6 +29,7 @@ public class CalculatorSimulation extends Simulation {
                         .setSecondNumber(2)
                         .build()
                 )
+                .deadlineAfter(Duration.ofMillis(100))
                 .header(Metadata.Key.of("example-header", Metadata.ASCII_STRING_MARSHALLER))
                 .value("example header value")
                 .check(
