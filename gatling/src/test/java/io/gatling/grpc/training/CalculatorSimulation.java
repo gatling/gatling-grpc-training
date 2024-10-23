@@ -55,7 +55,15 @@ public class CalculatorSimulation extends Simulation {
 
     GrpcServerStreamingServiceBuilder<PrimeNumberDecompositionRequest, PrimeNumberDecompositionResponse> serverStream =
         grpc("Prime Number Decomposition")
-            .serverStream(CalculatorServiceGrpc.getPrimeNumberDecompositionMethod());
+            .serverStream(CalculatorServiceGrpc.getPrimeNumberDecompositionMethod())
+            .check(
+                statusCode().is(Status.Code.OK),
+                response(PrimeNumberDecompositionResponse::getPrimeFactor)
+                    .transform(p -> p == 2L || p == 5L || p == 17L || p == 97L || p == 6669961L)
+                    .is(true)
+                //asciiTrailer("example-trailer").is("wrong value"),
+                //asciiHeader("example-header").is("wrong value")
+            );
 
     // Lifecycle: send + awaitStreamEnd
     ScenarioBuilder serverStreaming = scenario("Calculator Server Streaming")
