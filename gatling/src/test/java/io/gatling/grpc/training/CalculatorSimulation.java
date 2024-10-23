@@ -85,7 +85,9 @@ public class CalculatorSimulation extends Simulation {
     GrpcBidirectionalStreamingServiceBuilder<FindMaximumRequest, FindMaximumResponse> bidirectionalStream =
         grpc("Find Maximum")
             .bidiStream(CalculatorServiceGrpc.getFindMaximumMethod())
-            ;
+            .check(
+                response(FindMaximumResponse::getMaximum).saveAs("maximum")
+            );
 
     ScenarioBuilder bidirectionalStreaming = scenario("Calculator Bidirectional Streaming")
         .exec(
@@ -98,8 +100,15 @@ public class CalculatorSimulation extends Simulation {
                         .build();
                 })
             ),
-            bidirectionalStream.halfClose()
-        );
+            bidirectionalStream.halfClose(),
+            bidirectionalStream.awaitStreamEnd((main, forked) -> {
+               return main.set("maximum", forked.getInt("maximum"));
+            })
+        ).exec(session -> {
+            int maximum = session.getInt("maximum");
+            System.out.println("last maximum: " + maximum);
+            return session;
+        });
 
     // spotless:off
     // ./mvnw gatling:test -Dgrpc.scenario=unary
