@@ -1,9 +1,13 @@
 package io.gatling.grpc.training;
 
+import java.nio.charset.StandardCharsets;
+
 import io.gatling.grpc.training.calculator.*;
 import io.gatling.javaapi.core.ScenarioBuilder;
 import io.gatling.javaapi.core.Simulation;
 import io.gatling.javaapi.grpc.GrpcProtocolBuilder;
+
+import io.grpc.Metadata;
 
 import static io.gatling.javaapi.core.CoreDsl.*;
 import static io.gatling.javaapi.grpc.GrpcDsl.*;
@@ -24,6 +28,8 @@ public class CalculatorSimulation extends Simulation {
                         .setSecondNumber(2)
                         .build()
                 )
+                .header(Metadata.Key.of("example-header", Metadata.ASCII_STRING_MARSHALLER))
+                .value("example header value")
         );
 
     ScenarioBuilder deadlines = scenario("Calculator w/ Deadlines")
