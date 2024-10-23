@@ -1,10 +1,12 @@
 package io.gatling.grpc.training;
 
 import java.time.Duration;
+import java.util.concurrent.ThreadLocalRandom;
 
 import io.gatling.grpc.training.calculator.*;
 import io.gatling.javaapi.core.ScenarioBuilder;
 import io.gatling.javaapi.core.Simulation;
+import io.gatling.javaapi.grpc.GrpcBidirectionalStreamingServiceBuilder;
 import io.gatling.javaapi.grpc.GrpcProtocolBuilder;
 import io.gatling.javaapi.grpc.GrpcServerStreamingServiceBuilder;
 
@@ -80,9 +82,23 @@ public class CalculatorSimulation extends Simulation {
             // TODO
             ;
 
-    ScenarioBuilder bidirectionalStreaming = scenario("Calculator Bidirectional Streaming")
-            // TODO
+    GrpcBidirectionalStreamingServiceBuilder<FindMaximumRequest, FindMaximumResponse> bidirectionalStream =
+        grpc("Find Maximum")
+            .bidiStream(CalculatorServiceGrpc.getFindMaximumMethod())
             ;
+
+    ScenarioBuilder bidirectionalStreaming = scenario("Calculator Bidirectional Streaming")
+        .feed(csv("numbers.csv"))
+        .exec(
+            bidirectionalStream.start(),
+            repeat(10).on(
+                bidirectionalStream.send(session ->
+                    FindMaximumRequest.newBuilder()
+                        .setNumber(ThreadLocalRandom.current().nextInt(0, 1000))
+                        .build())
+            ),
+            bidirectionalStream.halfClose()
+        );
 
     // spotless:off
     // ./mvnw gatling:test -Dgrpc.scenario=unary
