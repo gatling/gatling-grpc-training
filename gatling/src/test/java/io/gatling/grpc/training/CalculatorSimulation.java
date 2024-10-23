@@ -56,6 +56,7 @@ public class CalculatorSimulation extends Simulation {
     GrpcServerStreamingServiceBuilder<PrimeNumberDecompositionRequest, PrimeNumberDecompositionResponse> serverStream =
         grpc("Prime Number Decomposition")
             .serverStream(CalculatorServiceGrpc.getPrimeNumberDecompositionMethod())
+            .messageResponseTimePolicy(MessageResponseTimePolicy.FromLastMessageReceived)
             .check(
                 statusCode().is(Status.Code.OK),
                 response(PrimeNumberDecompositionResponse::getPrimeFactor)
