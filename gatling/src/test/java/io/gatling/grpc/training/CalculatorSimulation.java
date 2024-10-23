@@ -85,6 +85,7 @@ public class CalculatorSimulation extends Simulation {
     GrpcBidirectionalStreamingServiceBuilder<FindMaximumRequest, FindMaximumResponse> bidirectionalStream =
         grpc("Find Maximum")
             .bidiStream(CalculatorServiceGrpc.getFindMaximumMethod())
+            .messageResponseTimePolicy(MessageResponseTimePolicy.FromLastMessageSent)
             .check(
                 response(FindMaximumResponse::getMaximum).saveAs("maximum")
             );
@@ -93,6 +94,7 @@ public class CalculatorSimulation extends Simulation {
         .exec(
             bidirectionalStream.start(),
             repeat(10).on(
+                pause(1),
                 bidirectionalStream.send(session -> {
                     int number = ThreadLocalRandom.current().nextInt(0, 1000);
                     return FindMaximumRequest.newBuilder()
