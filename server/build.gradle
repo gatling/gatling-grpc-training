@@ -16,7 +16,7 @@ dependencies {
   implementation "io.grpc:grpc-protobuf:1.69.0"
   implementation "io.grpc:grpc-services:1.69.0" // reflection
   implementation "com.nimbusds:nimbus-jose-jwt:10.0.1"
-  implementation "org.bouncycastle:bcpkix-jdk18on:1.79"
+  implementation "org.bouncycastle:bcpkix-jdk18on:1.80"
 }
 
 idea {
