@@ -15,7 +15,7 @@ dependencies {
   implementation "io.grpc:grpc-netty:1.70.0"
   implementation "io.grpc:grpc-protobuf:1.70.0"
   implementation "io.grpc:grpc-services:1.70.0" // reflection
-  implementation "com.nimbusds:nimbus-jose-jwt:10.0.1"
+  implementation "com.nimbusds:nimbus-jose-jwt:10.0.2"
   implementation "org.bouncycastle:bcpkix-jdk18on:1.80"
 }
 
