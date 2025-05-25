@@ -5,7 +5,7 @@
 
     <groupId>io.gatling.grpc.training</groupId>
     <artifactId>gatling-grpc-training-maven-java</artifactId>
-    <version>3.14.1</version>
+    <version>3.14.3</version>
 
     <properties>
         <!-- Change the line bellow if you're compiling with JDK 11 or 21 -->
