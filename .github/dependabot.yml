@@ -28,3 +28,12 @@ updates:
         versions: ['>= 4'] # https://github.com/grpc/grpc-java/issues/11015
     cooldown:
       default-days: 7
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    commit-message:
+      prefix: "chore"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+    cooldown:
+      default-days: 7
